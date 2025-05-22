@@ -54,3 +54,12 @@ export type TheClimbBranch = {
   address: string
   business_hours: [string, string][]
 }
+
+export type SettingSchedule = {
+  month: string
+  setting_date: {
+    date: string
+    color: string
+    wall: string
+  }[]
+}

@@ -66,6 +66,16 @@ function Main() {
   //       console.error(err)
   //     })
   // }, [])
+  // useEffect(() => {
+  //   fetch('/api/gpt')
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data)
+  //     })
+  //     .catch((err) => {
+  //       console.error(err)
+  //     })
+  // }, [])
 
   return (
     <div className="flex flex-col items-center justify-center">
