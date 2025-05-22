@@ -1,16 +1,13 @@
 'use client'
 
-import { TheClimbBranch } from '@/types/theClimbTypes'
-import Image from 'next/image'
+import { TheClimbBranch, TodaySetting } from '@/types/theClimbTypes'
+
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import Link from 'next/link'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
-import Glitch from './glitch'
-import TextItem from './TextItem'
-import ReflectFloor from './reflectfloor'
-import RetroStars from './retroStars'
+
+import SwiperNotice from './SwiperNotice'
+import dayjs from 'dayjs'
+import ListItem from './ListItem'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -19,24 +16,41 @@ const supabase = createClient(
 
 function Main() {
   const [theClimbs, setTheClimbs] = useState<TheClimbBranch[]>()
-  const [selectedBranch] = useState<undefined | number>()
-  const [textPosition, setTextPosition] = useState<{ x: number; y: number }[]>()
+  const [todaySetting, setTodaySetting] = useState<TodaySetting[]>()
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await supabase
-        .from('climbing_branch')
-        .select(
-          `
+      const { data } = await supabase.from('climbing_branch').select(
+        `
         *,
-        climbing_post (*)
+        setting_info (*)
       `,
-        )
-        .order('date', { foreignTable: 'climbing_post', ascending: false })
-      console.log(data)
+      )
       setTheClimbs(data as TheClimbBranch[])
     })()
   }, [])
+
+  useEffect(() => {
+    if (theClimbs) {
+      const res = theClimbs
+        .map((branch) => {
+          const todaySettingInfo = branch.setting_info.map((info) => {
+            // 당일 셋팅하는 날짜 찾기
+            const tempTodaySettingInfo = info.infos.find((info) => {
+              if (dayjs().format('YYYY-MM-DD') === info.date) {
+                return true
+              }
+            })
+            return tempTodaySettingInfo
+          })
+          return { branchName: branch.branch, today: todaySettingInfo[0] }
+        })
+        .filter((branch) => {
+          return branch.today
+        })
+      setTodaySetting(res)
+    }
+  }, [theClimbs])
 
   // useEffect(() => {
   //   fetch('/api/naver')
@@ -79,78 +93,36 @@ function Main() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="relative my-[10px] h-[50px] w-[300px]">
-        {/* <VFXSpan shader="glitch" className="text-[48px]">
-          THE CLIMB
-        </VFXSpan> */}
-        <Canvas>
-          <Glitch />
-          <OrbitControls enabled={false} />
-        </Canvas>
-      </div>
-      <div className="flex w-full max-w-[600px] flex-col flex-wrap justify-center gap-4">
-        <Canvas
-          style={{
-            height: 'calc(100vh - 70px)',
-            width: '100%',
-          }}
-          camera={{
-            position: [0, 1.4, 8],
-          }}
-          shadows>
-          <RetroStars />
-          <ReflectFloor />
-          <OrbitControls
-            enabled={true}
-            minPolarAngle={Math.PI / 2.5} // 수직 각도의 최소값 조정 (60도)
-            maxPolarAngle={Math.PI / 2.5} // 수직 각도의 최대값 조정 (60도)
-            enableZoom={false}
-            enablePan={false}
-          />
-          {theClimbs &&
-            theClimbs.map((branch, index, array) => {
-              return (
-                <TextItem
-                  key={branch.branch}
-                  branch={branch}
-                  setTextPosition={(x, y) => {
-                    setTextPosition((prev) => {
-                      if (prev?.find((item) => item.x === x && item.y === y)) {
-                        return prev
-                      }
-                      return [...(prev || []), { x: x, y: y }]
-                    })
-                  }}
-                  textPosition={textPosition}
-                  index={index}
-                  totalItems={array.length}
-                />
-              )
-            })}
-        </Canvas>
-      </div>
-      {selectedBranch && (
-        <div className="flex w-full max-w-[600px] flex-wrap justify-between gap-4 px-[10px]">
-          {theClimbs &&
-            theClimbs
-              .find((branch) => branch.id === selectedBranch)
-              ?.climbing_post.map((post) => {
-                return (
-                  <Link href={post.link} key={post.link} target="_blank">
-                    <div className="relative aspect-video w-[100%]">
-                      <Image
-                        src={post.image}
-                        alt={post.link}
-                        width={600}
-                        height={600}
-                        className="object-cover"
-                      />
-                    </div>
-                  </Link>
-                )
-              })}
+      <div className="relative w-[300px] text-center">
+        <div className="font-heavier text-[34px] font-normal text-yellow-200">
+          <span>CLIMBING</span>
         </div>
-      )}
+      </div>
+      <div className="mt-[12px] flex w-full max-w-[600px] flex-col flex-wrap justify-center gap-4">
+        <section>
+          <div className="px-[10px]">
+            <span className="font-heavier text-[18px] text-yellow-200">
+              Today{"'"}s Setting
+            </span>
+          </div>
+          <SwiperNotice todaySetting={todaySetting} onClickLogo={() => {}} />
+        </section>
+      </div>
+      <div className="mt-[40px] flex w-full max-w-[600px] flex-col flex-wrap justify-center gap-4">
+        <section>
+          <div className="px-[10px]">
+            <span className="font-heavier text-[18px] text-yellow-200">
+              List
+            </span>
+            <div className="mt-[10px] flex flex-col gap-[10px]">
+              {theClimbs?.map((branch) => {
+                return <ListItem key={branch.id} branch={branch} />
+              })}
+            </div>
+          </div>
+          <div></div>
+        </section>
+      </div>
     </div>
   )
 }

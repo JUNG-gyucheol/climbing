@@ -50,7 +50,18 @@ export type TheClimbBranch = {
   id: number
   insta_url: string
   logo: string
-  climbing_post: TheClimbPost[]
+  setting_info: {
+    branch_id: number
+    brand: string
+    created_at: string
+    id: number
+    infos: {
+      date: string
+      color: string
+      wall: string
+    }[]
+    setting_date: string
+  }[]
   address: string
   business_hours: [string, string][]
 }
@@ -62,4 +73,13 @@ export type SettingSchedule = {
     color: string
     wall: string
   }[]
+}
+
+export type TodaySetting = {
+  branchName: string
+  today?: {
+    date: string
+    color: string
+    wall: string
+  }
 }
