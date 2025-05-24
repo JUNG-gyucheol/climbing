@@ -3,8 +3,8 @@
   "short_name": "Climb",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#011b36",
-  "theme_color": "#011b36",
+  "background_color": "rgba(35, 77, 50, 1)",
+  "theme_color": "rgba(35, 77, 50, 1)",
   "orientation": "portrait",
   "description": "The Climb",
   "icons": [

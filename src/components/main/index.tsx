@@ -70,6 +70,7 @@ function Main() {
   //       console.error(err)
   //     })
   // }, [])
+
   // useEffect(() => {
   //   fetch('/api/download')
   //     .then((res) => res.json())
@@ -80,6 +81,7 @@ function Main() {
   //       console.error(err)
   //     })
   // }, [])
+
   // useEffect(() => {
   //   fetch('/api/gpt')
   //     .then((res) => res.json())
