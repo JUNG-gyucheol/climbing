@@ -110,6 +110,9 @@ function Main() {
           <SwiperNotice todaySetting={todaySetting} onClickLogo={() => {}} />
         </section>
       </div>
+      <div>
+        <section>지점 리스트</section>
+      </div>
       <div className="mt-[40px] flex w-full max-w-[600px] flex-col flex-wrap justify-center gap-4">
         <section>
           <div className="px-[10px]">
