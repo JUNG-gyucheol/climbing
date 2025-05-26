@@ -5265,6 +5265,11 @@ next@15.3.2:
     "@next/swc-win32-ia32-msvc" "13.5.9"
     "@next/swc-win32-x64-msvc" "13.5.9"
 
+node-cron@^4.0.7:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/node-cron/-/node-cron-4.0.7.tgz#f6c2542053bbf2ddd49742caeb560ec4c02236e9"
+  integrity sha512-A37UUDpxRT/kWanELr/oMayCWQFk9Zx9BEUoXrAKuKwKzH4XuAX+vMixMBPkgZBkADgJwXv91w5cMRTNSVP/mA==
+
 node-domexception@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-domexception/-/node-domexception-1.0.0.tgz#6888db46a1f71c0b76b3f7555016b63fe64766e5"
