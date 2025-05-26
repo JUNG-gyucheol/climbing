@@ -6,8 +6,8 @@ const { createClient } = require('@supabase/supabase-js')
 const { the_climbs } = require('@/utils/climbs')
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
+  process.env.SUPABASE_URL as string,
+  process.env.SUPABASE_KEY as string,
 )
 
 async function crawlNaverData() {
