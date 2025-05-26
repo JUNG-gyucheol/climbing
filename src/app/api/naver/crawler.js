@@ -20,18 +20,26 @@ const the_climbs = [
   { url: 'theclimb_nonhyeon', name: 'the_climb_nonhyeon', ko: '논현' },
 ]
 
+console.log(
+  ' process.env.NEXT_PUBLIC_SUPABASE_URL',
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+)
 const supabase = createClient(
-  process.env.SUPABASE_URL || '',
-  process.env.SUPABASE_KEY || '',
+  'https://vnrfusrbsfnzihuylbyc.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZucmZ1c3Jic2ZuemlodXlsYnljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyMDA3MjcsImV4cCI6MjA2Mjc3NjcyN30.ZwTUN2A261imcUzX4JIyvRBR9NwySIwbClQDtc99Vo4',
 )
 
 async function crawlNaverData() {
   try {
     const browser = await puppeteer.launch({
-      headless: true,
-      defaultViewport: null,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+      headless: 'new',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
+      protocolTimeout: 60000,
     })
     const page = await browser.newPage()
     await page.setUserAgent(
@@ -45,7 +53,7 @@ async function crawlNaverData() {
 
       const searchFrame = await page.$('#searchIframe')
       const frame = await searchFrame?.contentFrame()
-
+      console.log('Test1')
       if (frame) {
         await frame.evaluate(async (theClimb) => {
           const content = document.querySelectorAll('ul span')
@@ -69,6 +77,7 @@ async function crawlNaverData() {
       if (!entryFrame) {
         throw new Error('entryFrame not found')
       }
+      console.log('Test')
       const climbingContent = await entryFrame.evaluate(async () => {
         const content = document.querySelectorAll('em')
         const address = document.querySelectorAll(
@@ -88,7 +97,7 @@ async function crawlNaverData() {
           ),
         }
       })
-
+      console.log('Test2', climbingContent)
       await supabase
         .from('climbing_branch')
         .update({

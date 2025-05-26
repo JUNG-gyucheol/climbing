@@ -16,25 +16,23 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Install Puppeteer dependencies
+       - name: Install Chrome dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y chromium-browser
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Install Supabase
         run: npm install @supabase/supabase-js
 
       - name: Build TypeScript
-        run: |
-          npx tsc --project tsconfig.json
+        run: run: npm run build 
 
       - name: Run crawler
         run: node src/app/api/naver/crawler.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-          PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
