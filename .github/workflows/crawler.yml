@@ -2,30 +2,37 @@ name: Run Naver Crawler
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # 5분마다 실행 (GitHub의 최소 간격)
-  workflow_dispatch:        # 수동 실행 버튼 활성화
+    - cron: '*/5 * * * *' # 5분마다 실행 (GitHub의 최소 간격)
+  workflow_dispatch: # 수동 실행 버튼 활성화
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-          
+
       - name: Install dependencies
         run: npm install
-        
+
       - name: Install Puppeteer dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y chromium-browser
-        
+
+      - name: Install Supabase
+        run: npm install @supabase/supabase-js
+
+      - name: Build TypeScript
+        run: |
+          npx tsc --project tsconfig.json
+
       - name: Run crawler
-        run: node src/app/api/naver/route.ts
+        run: node src/app/api/naver/crawler.ts
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
