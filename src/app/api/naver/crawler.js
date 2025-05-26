@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 const puppeteer = require('puppeteer')
@@ -32,11 +31,11 @@ async function crawlNaverData() {
       const frame = await searchFrame?.contentFrame()
 
       if (frame) {
-        await frame.evaluate(async (theClimb: any) => {
+        await frame.evaluate(async (theClimb) => {
           const content = document.querySelectorAll('ul span')
           for (const span of content) {
             if (span.textContent?.includes(theClimb.ko)) {
-              ;(span as HTMLElement).click()
+              span.click()
               return
             }
           }
@@ -59,7 +58,7 @@ async function crawlNaverData() {
         const address = document.querySelectorAll(
           'div[class="place_section_content"] a',
         )
-        console.log((address[0] as HTMLElement).innerText)
+        console.log(address[0].innerText)
         content[0].click()
         await new Promise((resolve) => setTimeout(resolve, 2000))
         const parentElement =
@@ -67,9 +66,9 @@ async function crawlNaverData() {
         const firstClass = parentElement?.classList[0]
         const children = document.querySelectorAll(`div[class="${firstClass}"]`)
         return {
-          address: (address[0] as HTMLElement).innerText,
+          address: address[0].innerText,
           business_hours: Array.from(children).map((item) =>
-            (item as HTMLElement).innerText.split('\n').splice(0, 2),
+            item.innerText.split('\n').splice(0, 2),
           ),
         }
       })
