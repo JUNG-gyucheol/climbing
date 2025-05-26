@@ -44,9 +44,11 @@ async function crawlNaverData() {
 
     const times = []
     for (const theClimb of the_climbs) {
+      console.log('init', theClimb.ko)
       await page.goto(`https://map.naver.com/p/search/더클라임${theClimb.ko}`)
       await new Promise((resolve) => setTimeout(resolve, 5000))
 
+      console.log('searchFrame', theClimb.ko)
       const searchFrame = await page.$('#searchIframe')
       const frame = await searchFrame?.contentFrame()
       if (frame) {
@@ -65,13 +67,15 @@ async function crawlNaverData() {
         await page.goto(url)
         await new Promise((resolve) => setTimeout(resolve, 5000))
       }
-
       const EntryIFrame = await page.$('#entryIframe')
       const entryFrame = await EntryIFrame?.contentFrame()
+      console.log('entryFrame', theClimb.ko)
 
       if (!entryFrame) {
         throw new Error('entryFrame not found')
       }
+
+      console.log('climbingContent', theClimb.ko)
       const climbingContent = await entryFrame.evaluate(async () => {
         const content = document.querySelectorAll('em')
         const address = document.querySelectorAll(
@@ -91,13 +95,14 @@ async function crawlNaverData() {
           ),
         }
       })
+      console.log('success!!', theClimb.ko)
       await supabase
         .from('climbing_branch')
         .update({
           business_hours: climbingContent.business_hours,
         })
         .eq('branch', theClimb.ko)
-      console.log('success!')
+      console.log('success!', theClimb.ko)
       times.push(climbingContent)
     }
     console.log(times)
