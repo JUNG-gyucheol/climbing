@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 const puppeteer = require('puppeteer')
-const { createClient } = require('@supabase/supabase-js')
+// const { createClient } = require('@supabase/supabase-js')
 
 const the_climbs = [
-  { url: 'theclimb_sillim', name: 'the_climb_sillim', ko: '신림' },
-  { url: 'theclimb_sinsa', name: 'the_climb_sinsa', ko: '신사' },
-  { url: 'theclimb_magok', name: 'the_climb_magok', ko: '마곡' },
-  { url: 'theclimb_sadang', name: 'the_climb_sadang', ko: '사당' },
-  { url: 'theclimb_snu', name: 'the_climb_snu', ko: '서울대' },
-  { url: 'theclimb_ilsan', name: 'the_climb_ilsan', ko: '일산' },
-  { url: 'theclimb_yeonnam', name: 'the_climb_yeonnam', ko: '연남' },
-  { url: 'theclimb_b_hongdae', name: 'the_climb_b_hongdae', ko: '홍대' },
-  { url: 'theclimb_mullae', name: 'the_climb_mullae', ko: '문래' },
-  { url: 'theclimb_isu', name: 'the_climb_isu', ko: '이수' },
-  { url: 'theclimb_yangjae', name: 'the_climb_yangjae', ko: '양재' },
-  { url: 'theclimb_gangnam', name: 'the_climb_gangnam', ko: '강남' },
+  // { url: 'theclimb_sillim', name: 'the_climb_sillim', ko: '신림' },
+  // { url: 'theclimb_sinsa', name: 'the_climb_sinsa', ko: '신사' },
+  // { url: 'theclimb_magok', name: 'the_climb_magok', ko: '마곡' },
+  // { url: 'theclimb_sadang', name: 'the_climb_sadang', ko: '사당' },
+  // { url: 'theclimb_snu', name: 'the_climb_snu', ko: '서울대' },
+  // { url: 'theclimb_ilsan', name: 'the_climb_ilsan', ko: '일산' },
+  // { url: 'theclimb_yeonnam', name: 'the_climb_yeonnam', ko: '연남' },
+  // { url: 'theclimb_b_hongdae', name: 'the_climb_b_hongdae', ko: '홍대' },
+  // { url: 'theclimb_mullae', name: 'the_climb_mullae', ko: '문래' },
+  // { url: 'theclimb_isu', name: 'the_climb_isu', ko: '이수' },
+  // { url: 'theclimb_yangjae', name: 'the_climb_yangjae', ko: '양재' },
+  // { url: 'theclimb_gangnam', name: 'the_climb_gangnam', ko: '강남' },
   { url: 'theclimb_seongsu', name: 'the_climb_seongsu', ko: '성수' },
   { url: 'theclimb_nonhyeon', name: 'the_climb_nonhyeon', ko: '논현' },
 ]
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY,
-)
+// const supabase = createClient(
+//   process.env.SUPABASE_URL,
+//   process.env.SUPABASE_KEY,
+// )
 
 async function crawlNaverData() {
   try {
@@ -52,6 +52,7 @@ async function crawlNaverData() {
       const searchFrame = await page.$('#searchIframe')
       const frame = await searchFrame?.contentFrame()
       if (frame) {
+        console.log('inframe', theClimb.ko)
         await frame.evaluate(async (theClimb) => {
           const content = document.querySelectorAll('ul span')
           for (const span of content) {
@@ -64,6 +65,7 @@ async function crawlNaverData() {
         await new Promise((resolve) => setTimeout(resolve, 5000))
         const url = page.url()
 
+        console.log('url', url)
         await page.goto(url)
         await new Promise((resolve) => setTimeout(resolve, 5000))
       }
@@ -95,14 +97,14 @@ async function crawlNaverData() {
           ),
         }
       })
-      console.log('success!!', theClimb.ko)
-      await supabase
-        .from('climbing_branch')
-        .update({
-          business_hours: climbingContent.business_hours,
-        })
-        .eq('branch', theClimb.ko)
-      console.log('success!', theClimb.ko)
+      // console.log('success!!', theClimb.ko)
+      // await supabase
+      //   .from('climbing_branch')
+      //   .update({
+      //     business_hours: climbingContent.business_hours,
+      //   })
+      //   .eq('branch', theClimb.ko)
+      // console.log('success!', theClimb.ko)
       times.push(climbingContent)
     }
     console.log(times)
