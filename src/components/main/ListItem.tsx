@@ -9,6 +9,8 @@ const ListItem: React.FC<{
 }> = ({ branch }) => {
   const [todayBusinessHours, setTodayBusinessHours] = useState<string[]>()
 
+  console.log(branch)
+
   useEffect(() => {
     const result = branch.business_hours
       .map((hour) => {

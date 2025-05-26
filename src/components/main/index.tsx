@@ -7,7 +7,8 @@ import { createClient } from '@supabase/supabase-js'
 
 import SwiperNotice from './SwiperNotice'
 import dayjs from 'dayjs'
-import ListItem from './ListItem'
+import BranchList from './branchList'
+import ClimbInfo from './climbInfo'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -17,6 +18,7 @@ const supabase = createClient(
 function Main() {
   const [theClimbs, setTheClimbs] = useState<TheClimbBranch[]>()
   const [todaySetting, setTodaySetting] = useState<TodaySetting[]>()
+  const [selectedBranch, setSelectedBranch] = useState<TheClimbBranch>()
 
   useEffect(() => {
     ;(async () => {
@@ -49,6 +51,12 @@ function Main() {
           return branch.today
         })
       setTodaySetting(res)
+    }
+  }, [theClimbs])
+
+  useEffect(() => {
+    if (theClimbs) {
+      setSelectedBranch(theClimbs[0])
     }
   }, [theClimbs])
 
@@ -110,20 +118,18 @@ function Main() {
           <SwiperNotice todaySetting={todaySetting} onClickLogo={() => {}} />
         </section>
       </div>
-      <div>
-        <section>지점 리스트</section>
+      <div className="mt-[10px] px-[10px]">
+        <BranchList
+          theClimbs={theClimbs}
+          onClickBranch={(branch) => {
+            setSelectedBranch(branch)
+          }}
+        />
       </div>
       <div className="mt-[40px] flex w-full max-w-[600px] flex-col flex-wrap justify-center gap-4">
         <section>
           <div className="px-[10px]">
-            <span className="font-heavier text-[18px] text-yellow-200">
-              List
-            </span>
-            <div className="mt-[10px] flex flex-col gap-[10px]">
-              {theClimbs?.map((branch) => {
-                return <ListItem key={branch.id} branch={branch} />
-              })}
-            </div>
+            {selectedBranch && <ClimbInfo branch={selectedBranch} />}
           </div>
           <div></div>
         </section>

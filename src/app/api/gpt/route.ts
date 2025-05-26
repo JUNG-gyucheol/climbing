@@ -115,17 +115,17 @@ export async function GET() {
                 setting_date: [
                   {date: "날짜1", color: "색상", "wall": "벽이름1"}, 
                   {date: "날짜2", color: "색상", "wall": "벽이름2"}
-                 ]
+                ]
               }
   
               예시:
               {
-                 "month": "현재연도-05",
+                "month": "현재연도-02",
                 "setting_date": [
-                    {"date": "현재연도-05-01", "color": "노랑", "wall": "벽이름1"},
-                    {"date": "현재연도-05-02", "color": "노랑", "wall": "벽이름2"}
+                    {"date": "현재연도-02-01", "color": "노랑", "wall": "벽이름1"},
+                    {"date": "현재연도-02-02", "color": "노랑", "wall": "벽이름2"}
                 ]
-             }
+              }
               `,
           },
           {
@@ -164,15 +164,27 @@ export async function GET() {
         .eq('brand', '더클라임')
 
       if (branchData) {
-        console.log('branchData', branchData)
-        const { error } = await supabase.from('setting_info').insert({
-          branch_id: branchData[0].id,
-          brand: '더클라임',
-          infos: settingInfo?.setting_date,
-          setting_date: dayjs(settingInfo?.month).toISOString(),
-        })
-        if (error) {
-          console.error('Failed to insert setting info:', error)
+        const { data: existingData } = await supabase
+          .from('setting_info')
+          .select()
+          .eq('branch_id', branchData[0].id)
+          .eq(
+            'setting_date',
+            dayjs(settingInfo?.month).add(9, 'hour').toISOString(),
+          )
+
+        if (existingData) {
+          const { error } = await supabase.from('setting_info').insert({
+            branch_id: branchData[0].id,
+            brand: '더클라임',
+            infos: settingInfo?.setting_date,
+            setting_date: dayjs(settingInfo?.month)
+              .add(9, 'hour')
+              .toISOString(),
+          })
+          if (error) {
+            console.error('Failed to insert setting info:', error)
+          }
         }
       }
 

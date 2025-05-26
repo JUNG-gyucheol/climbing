@@ -26,7 +26,7 @@ const SwiperNotice: React.FC<{
         slidesPerView={2}
         // centeredSlides={true}
         // spaceBetween={5}
-        loop={true}
+        // loop={true}
         mousewheel={true}
         keyboard={{ enabled: true }}
         // pagination={{
@@ -44,19 +44,21 @@ const SwiperNotice: React.FC<{
           disableOnInteraction: false, // 사용자 상호작용 후에도 자동 재생 유지
         }}
         onActiveIndexChange={handleSlideChange}>
-        {todaySetting?.map((climbingBranch, index) => {
-          return (
-            <SwiperSlide key={index} className={`relative`}>
-              <ClimbingList
-                key={index}
-                climbingBranch={climbingBranch}
-                onClickLogo={(key) => onClickLogo(key)}
-                index={index}
-                activeIndex={activeIndex}
-              />
-            </SwiperSlide>
-          )
-        })}
+        {(todaySetting ? todaySetting : Array(2).fill(undefined)).map(
+          (climbingBranch, index) => {
+            return (
+              <SwiperSlide key={index} className={`relative`}>
+                <ClimbingList
+                  key={index}
+                  climbingBranch={climbingBranch}
+                  onClickLogo={(key) => onClickLogo(key)}
+                  index={index}
+                  activeIndex={activeIndex}
+                />
+              </SwiperSlide>
+            )
+          },
+        )}
       </Swiper>
     </div>
   )
