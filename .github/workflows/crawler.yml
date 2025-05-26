@@ -32,7 +32,7 @@ jobs:
           npx tsc --project tsconfig.json
 
       - name: Run crawler
-        run: node src/app/api/naver/crawler.ts
+        run: node src/app/api/naver/crawler.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
