@@ -33,8 +33,6 @@ const ClimbInfo: React.FC<{
     setTodayBusinessHours(result[0])
   }, [branch])
 
-  console.log(branch)
-
   return (
     <div className="border-charcoal-200 rounded-[10px] border-[1px] bg-yellow-100 px-[15px] py-[8px]">
       <div className="flex items-center justify-center gap-[20px]">
