@@ -49,7 +49,7 @@ async function crawlNaverData() {
       await new Promise((resolve) => setTimeout(resolve, 5000))
 
       console.log('searchFrame', theClimb.ko)
-      const searchFrame = await page.$('#searchIframe')
+      const searchFrame = await page1.$('#searchIframe')
       console.log('searchFrame', searchFrame)
       const frame = await searchFrame?.contentFrame()
       console.log('frame', frame)
@@ -108,8 +108,8 @@ async function crawlNaverData() {
       //   .eq('branch', theClimb.ko)
       // console.log('success!', theClimb.ko)
       times.push(climbingContent)
-      await browser1.close()
     }
+    await browser1.close()
 
     const browser2 = await puppeteer.launch({
       headless: 'new',
