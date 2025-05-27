@@ -50,9 +50,9 @@ async function crawlNaverData() {
 
       console.log('searchFrame', theClimb.ko)
       const searchFrame = await page1.$('#searchIframe')
-      console.log('searchFrame', searchFrame)
+      console.log('searchFrame')
       const frame = await searchFrame?.contentFrame()
-      console.log('frame', frame)
+      console.log('frame')
       if (frame) {
         console.log('inframe', theClimb.ko)
         await frame.evaluate(async (theClimb) => {
@@ -99,14 +99,14 @@ async function crawlNaverData() {
           ),
         }
       })
-      // console.log('success!!', theClimb.ko)
-      // await supabase
-      //   .from('climbing_branch')
-      //   .update({
-      //     business_hours: climbingContent.business_hours,
-      //   })
-      //   .eq('branch', theClimb.ko)
-      // console.log('success!', theClimb.ko)
+      console.log('success!!', theClimb.ko)
+      await supabase
+        .from('climbing_branch')
+        .update({
+          business_hours: climbingContent.business_hours,
+        })
+        .eq('branch', theClimb.ko)
+      console.log('success!', theClimb.ko)
       times.push(climbingContent)
     }
     await browser1.close()
@@ -132,9 +132,9 @@ async function crawlNaverData() {
 
       console.log('searchFrame', theClimb.ko)
       const searchFrame = await page2.$('#searchIframe')
-      console.log('searchFrame', searchFrame)
+      console.log('searchFrame')
       const frame = await searchFrame?.contentFrame()
-      console.log('frame', frame)
+      console.log('frame')
       if (frame) {
         console.log('inframe', theClimb.ko)
         await frame.evaluate(async (theClimb) => {
@@ -181,25 +181,17 @@ async function crawlNaverData() {
           ),
         }
       })
-      // console.log('success!!', theClimb.ko)
-      // await supabase
-      //   .from('climbing_branch')
-      //   .update({
-      //     business_hours: climbingContent.business_hours,
-      //   })
-      //   .eq('branch', theClimb.ko)
-      // console.log('success!', theClimb.ko)
+      console.log('success!!', theClimb.ko)
+      await supabase
+        .from('climbing_branch')
+        .update({
+          business_hours: climbingContent.business_hours,
+        })
+        .eq('branch', theClimb.ko)
+      console.log('success!', theClimb.ko)
       times.push(climbingContent)
     }
-    console.log(times)
     await browser2.close()
-    // await new Promise((resolve) => setTimeout(resolve, 3000))
-    // await page.evaluate(() => {
-    //   const content = document.querySelectorAll('span')
-    //   return Array.from(content).map((item) => item.textContent)
-    // })
-
-    // console.log(content)
   } catch (error) {
     console.error(error)
   }
