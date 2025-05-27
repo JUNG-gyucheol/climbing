@@ -47,8 +47,8 @@ async function crawlNaverData() {
     })
     await page.waitForSelector('input[name="username"]')
 
-    await page.type('input[name="username"]', 'ggyu_ppi')
-    await page.type('input[name="password"]', 'as248651')
+    await page.type('input[name="username"]', process.env.INSTAGRAM_ID)
+    await page.type('input[name="password"]', process.env.INSTAGRAM_PASSWORD)
 
     await page.click('button[type="submit"]')
 
