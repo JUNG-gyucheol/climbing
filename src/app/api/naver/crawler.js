@@ -50,7 +50,9 @@ async function crawlNaverData() {
 
       console.log('searchFrame', theClimb.ko)
       const searchFrame = await page.$('#searchIframe')
+      console.log('searchFrame', searchFrame)
       const frame = await searchFrame?.contentFrame()
+      console.log('frame', frame)
       if (frame) {
         console.log('inframe', theClimb.ko)
         await frame.evaluate(async (theClimb) => {
