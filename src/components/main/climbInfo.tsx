@@ -3,6 +3,7 @@ import { formatDays, formatDayToString } from '@/utils/formatDays'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import Logo from './logo'
+import Image from 'next/image'
 
 const ClimbInfo: React.FC<{
   branch: TheClimbBranch
@@ -66,28 +67,38 @@ const ClimbInfo: React.FC<{
       </div>
       <div className="mt-[12px] flex justify-center">
         <div>
-          <span className="font-pretendard text-[14px] font-bold text-green-300">
-            세팅 날짜
-          </span>
+          <span className="font-pretendard text-[14px] font-bold text-green-300"></span>
           <div className="flex flex-col gap-[4px]">
-            {branch.setting_info.map((v) => {
-              return v.infos.map((info) => {
-                return (
-                  <div
-                    key={`${info.date}-${info.wall}`}
-                    className="flex gap-[10px]">
-                    <span className="font-pretendard text-[14px] font-bold text-green-300">
-                      {info.date}(
-                      {formatDayToString(dayjs(info.date).get('day') as number)}
-                      )
-                    </span>
-                    <span className="font-pretendard text-[14px] font-bold text-green-300">
-                      {info.wall}
-                    </span>
-                  </div>
-                )
-              })
-            })}
+            <div>
+              <Image
+                src={`/schedules/${dayjs().format('YYYY-MM')}_${branch.branch}_wall.png`}
+                alt="schedule"
+                width={300}
+                height={300}
+              />
+            </div>
+            <div>
+              {branch.setting_info.map((v) => {
+                return v.infos.map((info) => {
+                  return (
+                    <div key={`${info.date}-${info.wall}`}>
+                      <div className="flex gap-[10px]">
+                        <span className="font-pretendard text-[14px] font-bold text-green-300">
+                          {info.date}(
+                          {formatDayToString(
+                            dayjs(info.date).get('day') as number,
+                          )}
+                          )
+                        </span>
+                        <span className="font-pretendard text-[14px] font-bold text-green-300">
+                          {info.wall}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                })
+              })}
+            </div>
           </div>
         </div>
       </div>

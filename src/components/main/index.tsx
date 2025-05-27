@@ -91,6 +91,17 @@ function Main() {
   // }, [])
 
   // useEffect(() => {
+  //   fetch('/api/download/schedule')
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data)
+  //     })
+  //     .catch((err) => {
+  //       console.error(err)
+  //     })
+  // }, [])
+
+  // useEffect(() => {
   //   fetch('/api/gpt')
   //     .then((res) => res.json())
   //     .then((data) => {
