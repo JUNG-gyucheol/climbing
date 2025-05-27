@@ -28,7 +28,7 @@ const the_climbs = [
 async function crawlNaverData() {
   try {
     const browser = await puppeteer.launch({
-      headless: 'new',
+      headless: false,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
@@ -47,15 +47,27 @@ async function crawlNaverData() {
     })
     await page.waitForSelector('input[name="username"]')
 
-    await page.type('input[name="username"]', process.env.INSTAGRAM_ID)
-    await page.type('input[name="password"]', process.env.INSTAGRAM_PASSWORD)
+    await page.type('input[name="username"]', 'ggyu_ppi')
+    await page.type('input[name="password"]', 'as248651')
 
     await page.click('button[type="submit"]')
 
     const content = await page.content()
     console.log(content)
 
-    console.log('content')
+    await new Promise((resolve) => setTimeout(resolve, 10000))
+
+    const i = await page.evaluate(() => {
+      const imgElements = document.querySelectorAll('img')
+
+      return {
+        images: Array.from(imgElements, (img) => img.src),
+        alt: Array.from(imgElements, (img) => img.alt),
+      }
+    })
+
+    console.log(i)
+
     await page.waitForSelector('img[alt="ggyu_ppi님의 프로필 사진"]', {
       timeout: 100000,
     })
