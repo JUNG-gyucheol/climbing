@@ -20,10 +20,10 @@ const the_climbs = [
   { url: 'theclimb_nonhyeon', name: 'the_climb_nonhyeon', ko: '논현' },
 ]
 
-// const supabase = createClient(
-//   process.env.SUPABASE_URL,
-//   process.env.SUPABASE_KEY,
-// )
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY,
+)
 
 async function crawlNaverData() {
   try {
