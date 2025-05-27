@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 const puppeteer = require('puppeteer')
-// const { createClient } = require('@supabase/supabase-js')
+const { createClient } = require('@supabase/supabase-js')
 
 const the_climbs = [
   { url: 'theclimb_sillim', name: 'the_climb_sillim', ko: '신림' },
