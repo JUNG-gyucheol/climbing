@@ -1,13 +1,14 @@
 # Portfolio Website
 
-더클라임이라는 클라이밍장 영업시간, 주소, 지점을 보여주고 있습니다. Three.js를 활용한 3D 인터랙티브 요소와 반응형 디자인을 결합하여 제작되었습니다.
+더클라임이라는 클라이밍장 영업시간, 주소, 세팅날짜, 지점을 보여주고 있습니다.
 
-- 라이브 데모: https://climbing-list.vercel.app/
+- 라이브 데모: https://climbing-two.vercel.app/
 
 ## 🌟 주요 기능
 
-- 3D 인터랙티브(카드 형식)
 - PWA (Progressive Web App) 지원
+- 인스타그램 피드 이미지를 링크를 gpt로 전달하여 클라이밍 일정을 가져옴
+- 영업시간은 네이버를 크롤링하여 가져옴(Github Actions scheduler 사용)
 
 ## 🛠 사용 기술
 
@@ -54,4 +55,4 @@ yarn build
 
 이 웹사이트는 [배포 플랫폼]에 배포되어 있습니다.
 
-- 라이브 데모: https://climbing-list.vercel.app/
+- 라이브 데모: https://climbing-two.vercel.app/
