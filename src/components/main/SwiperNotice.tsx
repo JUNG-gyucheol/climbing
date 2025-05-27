@@ -19,7 +19,7 @@ const SwiperNotice: React.FC<{
   }
 
   return (
-    <div className="mt-[10px] w-screen">
+    <div className="mt-[10px] w-screen max-w-[600px]">
       <Swiper
         modules={[Autoplay, Keyboard, Mousewheel, Pagination]}
         direction="horizontal"

@@ -102,7 +102,7 @@ function Main() {
   // }, [])
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex w-full max-w-[600px] flex-col items-center justify-center">
       <div className="relative w-[300px] text-center">
         <div className="font-heavier text-[34px] font-normal text-yellow-200">
           <span>CLIMBING</span>
@@ -118,7 +118,7 @@ function Main() {
           <SwiperNotice todaySetting={todaySetting} onClickLogo={() => {}} />
         </section>
       </div>
-      <div className="mt-[10px] px-[10px]">
+      <div className="mt-[10px] w-full px-[10px]">
         <BranchList
           theClimbs={theClimbs}
           onClickBranch={(branch) => {

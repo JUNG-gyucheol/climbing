@@ -5,7 +5,7 @@ import { VFXProvider } from 'react-vfx'
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <VFXProvider>
-      <div>{children}</div>
+      <div className="flex justify-center">{children}</div>
     </VFXProvider>
   )
 }
