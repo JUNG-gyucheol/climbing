@@ -1,41 +1,47 @@
 import { TheClimbBranch } from '@/types/theClimbTypes'
-import { formatDays, formatDayToString } from '@/utils/formatDays'
-import dayjs from 'dayjs'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import Logo from './logo'
-import Image from 'next/image'
+import SettingImage from './SettingImage'
 
 const ClimbInfo: React.FC<{
   branch: TheClimbBranch
 }> = ({ branch }) => {
-  const [, setTodayBusinessHours] = useState<string[]>()
-  const [businessHours, setBusinessHours] = useState<(string | number)[][]>()
+  // const [, setTodayBusinessHours] = useState<string[]>()
+  // const [businessHours, setBusinessHours] = useState<(string | number)[][]>()
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const result = branch.business_hours
-      .map((hour) => {
-        if (dayjs().get('day') === formatDays(hour[0])) {
-          return hour
-        }
-      })
-      .filter((hour) => hour !== undefined)
+    if (ref.current) {
+      console.log(ref.current.offsetWidth)
+    }
+  }, [ref])
+  // useEffect(() => {
+  //   const result = branch.business_hours
+  //     .map((hour) => {
+  //       if (dayjs().get('day') === formatDays(hour[0])) {
+  //         return hour
+  //       }
+  //     })
+  //     .filter((hour) => hour !== undefined)
 
-    const sortedBusinessHours = branch.business_hours
-      .map((hour) => {
-        return [formatDays(hour[0]), hour[1]]
-      })
-      .sort((a, b) => {
-        const dayA = (a[0] as number) === 0 ? 7 : (a[0] as number)
-        const dayB = (b[0] as number) === 0 ? 7 : (b[0] as number)
-        return dayA - dayB
-      })
+  //   const sortedBusinessHours = branch.business_hours
+  //     .map((hour) => {
+  //       return [formatDays(hour[0]), hour[1]]
+  //     })
+  //     .sort((a, b) => {
+  //       const dayA = (a[0] as number) === 0 ? 7 : (a[0] as number)
+  //       const dayB = (b[0] as number) === 0 ? 7 : (b[0] as number)
+  //       return dayA - dayB
+  //     })
 
-    setBusinessHours(sortedBusinessHours)
-    setTodayBusinessHours(result[0])
-  }, [branch])
+  //   setBusinessHours(sortedBusinessHours)
+  //   setTodayBusinessHours(result[0])
+  // }, [branch])
 
   return (
-    <div className="border-charcoal-200 rounded-[10px] border-[1px] bg-yellow-100 px-[15px] py-[8px]">
+    <div
+      ref={ref}
+      className="border-charcoal-200 rounded-[10px] border-[1px] bg-yellow-100 px-[15px] py-[8px]">
       <div className="flex items-center justify-center gap-[20px]">
         <div className="flex shrink-0 flex-col items-center justify-center gap-[5px]">
           <Logo branchName={branch.branch} width={100} height={100} />
@@ -51,13 +57,9 @@ const ClimbInfo: React.FC<{
             영업시간
           </span>
           <div className="font-pretendard flex flex-col gap-[4px] text-[12px] leading-3.5 font-[700] text-green-300">
-            {businessHours ? (
-              businessHours.map((hour) => {
-                return (
-                  <span key={hour[0]}>
-                    {formatDayToString(hour[0] as number)} {hour[1]}
-                  </span>
-                )
+            {branch ? (
+              branch.business_hours.map((hour, index) => {
+                return <span key={`${hour[0]}-${index}`}>{hour.join(' ')}</span>
               })
             ) : (
               <span>영업시간 정보가 없습니다.</span>
@@ -69,34 +71,19 @@ const ClimbInfo: React.FC<{
         <div>
           <span className="font-pretendard text-[14px] font-bold text-green-300"></span>
           <div className="flex flex-col gap-[4px]">
-            <div>
-              <Image
-                src={`/schedules/${dayjs().format('YYYY-MM')}_${branch.branch}_wall.png`}
-                alt="schedule"
-                width={300}
-                height={300}
-              />
-            </div>
-            <div>
-              {branch.setting_info.map((v) => {
-                return v.infos.map((info) => {
-                  return (
-                    <div key={`${info.date}-${info.wall}`}>
-                      <div className="flex gap-[10px]">
-                        <span className="font-pretendard text-[14px] font-bold text-green-300">
-                          {info.date}(
-                          {formatDayToString(
-                            dayjs(info.date).get('day') as number,
-                          )}
-                          )
-                        </span>
-                        <span className="font-pretendard text-[14px] font-bold text-green-300">
-                          {info.wall}
-                        </span>
-                      </div>
-                    </div>
-                  )
-                })
+            <div className="flex gap-[4px]">
+              {branch.setting_info.map((v, idx, arr) => {
+                if (!v.infos || v.infos.length === 0) return null
+                return (
+                  <SettingImage
+                    key={`${v.setting_date}-${v.infos}`}
+                    branch={v}
+                    branchName={branch.branch}
+                    ref={ref}
+                    length={arr.filter((a) => a).length}
+                    idx={idx}
+                  />
+                )
               })}
             </div>
           </div>

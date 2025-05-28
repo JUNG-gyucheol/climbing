@@ -22,12 +22,20 @@ function Main() {
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await supabase.from('climbing_branch').select(
-        `
+      const { data } = await supabase
+        .from('climbing_branch')
+        .select(
+          `
         *,
-        setting_info (*)
+       setting_info(*)
       `,
-      )
+        )
+        .gte(
+          'setting_info.setting_date',
+          dayjs().subtract(1, 'month').startOf('day').toISOString(),
+        )
+
+      console.log(data)
       setTheClimbs(data as TheClimbBranch[])
     })()
   }, [])
@@ -38,7 +46,7 @@ function Main() {
         .map((branch) => {
           const todaySettingInfo = branch.setting_info.map((info) => {
             // 당일 셋팅하는 날짜 찾기
-            const tempTodaySettingInfo = info.infos.find((info) => {
+            const tempTodaySettingInfo = info.infos?.find((info) => {
               if (dayjs().format('YYYY-MM-DD') === info.date) {
                 return true
               }
