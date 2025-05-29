@@ -32,7 +32,7 @@ function Main() {
         )
         .gte(
           'setting_info.setting_date',
-          dayjs().subtract(1, 'month').startOf('day').toISOString(),
+          dayjs().subtract(2, 'month').startOf('day').toISOString(),
         )
 
       console.log(data)

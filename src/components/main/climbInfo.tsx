@@ -72,8 +72,10 @@ const ClimbInfo: React.FC<{
           <span className="font-pretendard text-[14px] font-bold text-green-300"></span>
           <div className="flex flex-col gap-[4px]">
             <div className="flex gap-[4px]">
-              {branch.setting_info.map((v, idx, arr) => {
+              {branch.setting_info.slice(0, 2).map((v, idx, arr) => {
                 if (!v.infos || v.infos.length === 0) return null
+
+                console.log('Setting date:', arr.length)
                 return (
                   <SettingImage
                     key={`${v.setting_date}-${v.infos}`}

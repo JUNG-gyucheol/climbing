@@ -87,13 +87,13 @@ export async function GET() {
 
     await page.click('button[type="submit"]')
 
-    await page.waitForSelector('img[alt="ggyu_ppi님의 프로필 사진"]', {
+    await page.waitForSelector('img[alt="ggyu_apii님의 프로필 사진"]', {
       timeout: 100000,
     })
 
-    if (fs.existsSync('./public/schedules')) {
-      fs.rmSync('./public/schedules', { recursive: true, force: true })
-    }
+    // if (fs.existsSync('./public/schedules')) {
+    //   fs.rmSync('./public/schedules', { recursive: true, force: true })
+    // }
 
     const datas = []
     for (let i = 0; i < the_climbs.length; i++) {
@@ -155,11 +155,16 @@ export async function GET() {
       if (formatedData.length !== 0) {
         datas.push(...formatedData)
       }
-      while (formatedData.length === 0) {
+      let count = 0
+      while (formatedData.length < 2) {
         console.log('waiting...')
         formatedData = await findSchedule(page)
         if (formatedData.length !== 0) {
           datas.push(...formatedData)
+        }
+        count++
+        if (count > 5) {
+          break
         }
       }
 
