@@ -7,6 +7,7 @@ import fs from 'fs'
 import OpenAI from 'openai'
 import { supabase } from '@/client/client'
 import { SettingSchedule } from '@/types/theClimbTypes'
+import _ from 'lodash'
 
 const client = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -91,9 +92,9 @@ export async function GET() {
       timeout: 100000,
     })
 
-    // if (fs.existsSync('./public/schedules')) {
-    //   fs.rmSync('./public/schedules', { recursive: true, force: true })
-    // }
+    if (fs.existsSync('./public/schedules')) {
+      fs.rmSync('./public/schedules', { recursive: true, force: true })
+    }
 
     const datas = []
     for (let i = 0; i < the_climbs.length; i++) {
@@ -110,55 +111,18 @@ export async function GET() {
 
       // 컨텐츠 로드를 위해 잠시 대기
       let formatedData = await findSchedule(page)
-      // await page.evaluate(async () => {
-      //   const delay = (ms: number) =>
-      //     new Promise((resolve) => setTimeout(resolve, ms))
-
-      //   for (let i = 0; i < 1; i++) {
-      //     // 3번 스크롤
-      //     window.scrollTo(0, document.body.scrollHeight)
-      //     await delay(5000) // 1.5초 대기
-      //   }
-      // })
-
-      // // 컨텐츠 로드를 위해 잠시 대기
-      // await page.waitForSelector('img', { timeout: 10000 })
-
-      // // await page.waitForSelector('img', { timeout: 5000 });
-      // const images = await page.evaluate(() => {
-      //   const imgElements = document.querySelectorAll('img')
-
-      //   return {
-      //     images: Array.from(imgElements, (img) => img)
-      //       .filter((img) => !img.src.includes('150x150'))
-      //       .slice(1)
-      //       .map((img) => img.src),
-      //     description: Array.from(imgElements, (img) => img)
-      //       .filter((img) => !img.src.includes('150x150'))
-      //       .slice(1)
-      //       .map((img) => img.alt),
-      //   }
-      // })
-
-      // let formatedData = images.images
-      //   .map((image, index) => {
-      //     const settingRegex = /SETTINGSCHEDULE|SCHEDULE/i
-      //     const description = images.description[index] || ''
-      //     if (!settingRegex.test(description)) return null
-      //     return {
-      //       description: images.description[index],
-      //       image: image,
-      //     }
-      //   })
-      //   .filter((item) => item !== null)
+      console.log('prev', formatedData)
 
       if (formatedData.length !== 0) {
         datas.push(...formatedData)
       }
+
       let count = 0
       while (formatedData.length < 2) {
         console.log('waiting...')
-        formatedData = await findSchedule(page)
+        const res = await findSchedule(page)
+        formatedData.push(...res)
+        formatedData = _.unionBy(formatedData, 'description')
         if (formatedData.length !== 0) {
           datas.push(...formatedData)
         }

@@ -88,6 +88,7 @@ function Main() {
   // }, [])
 
   // useEffect(() => {
+  //   console.log('ASdsad')
   //   fetch('/api/download')
   //     .then((res) => res.json())
   //     .then((data) => {
@@ -98,16 +99,16 @@ function Main() {
   //     })
   // }, [])
 
-  // useEffect(() => {
-  //   fetch('/api/download/schedule')
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data)
-  //     })
-  //     .catch((err) => {
-  //       console.error(err)
-  //     })
-  // }, [])
+  useEffect(() => {
+    fetch('/api/download/schedule')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }, [])
 
   // useEffect(() => {
   //   fetch('/api/gpt')
