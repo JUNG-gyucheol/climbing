@@ -88,9 +88,12 @@ export async function GET() {
 
     await page.click('button[type="submit"]')
 
-    await page.waitForSelector('img[alt="ggyu_apii님의 프로필 사진"]', {
-      timeout: 100000,
-    })
+    await page.waitForSelector(
+      `img[alt="${process.env.NEXT_PUBLIC_INSTAGRAM_ID}님의 프로필 사진"]`,
+      {
+        timeout: 100000,
+      },
+    )
 
     if (fs.existsSync('./public/schedules')) {
       fs.rmSync('./public/schedules', { recursive: true, force: true })

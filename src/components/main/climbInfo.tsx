@@ -1,5 +1,5 @@
 import { TheClimbBranch } from '@/types/theClimbTypes'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import Logo from './logo'
 import SettingImage from './SettingImage'
 
@@ -10,11 +10,6 @@ const ClimbInfo: React.FC<{
   // const [businessHours, setBusinessHours] = useState<(string | number)[][]>()
   const ref = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (ref.current) {
-      console.log(ref.current.offsetWidth)
-    }
-  }, [ref])
   // useEffect(() => {
   //   const result = branch.business_hours
   //     .map((hour) => {
@@ -74,8 +69,6 @@ const ClimbInfo: React.FC<{
             <div className="flex gap-[4px]">
               {branch.setting_info.slice(0, 2).map((v, idx, arr) => {
                 if (!v.infos || v.infos.length === 0) return null
-
-                console.log('Setting date:', arr.length)
                 return (
                   <SettingImage
                     key={`${v.setting_date}-${v.infos}`}

@@ -35,8 +35,18 @@ function Main() {
           dayjs().subtract(2, 'month').startOf('day').toISOString(),
         )
 
-      console.log(data)
-      setTheClimbs(data as TheClimbBranch[])
+      const sortedData = data?.map((branch) => ({
+        ...branch,
+        setting_info: [...branch.setting_info]
+          .sort(
+            (a, b) =>
+              dayjs(b.setting_date).valueOf() - dayjs(a.setting_date).valueOf(),
+          )
+          .filter((info) => {
+            return info.infos
+          }),
+      }))
+      setTheClimbs(sortedData as TheClimbBranch[])
     })()
   }, [])
 
