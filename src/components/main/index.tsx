@@ -21,6 +21,7 @@ function Main() {
   const [selectedBranch, setSelectedBranch] = useState<TheClimbBranch>()
 
   useEffect(() => {
+    // 2달 전부터 오늘까지 데이터 가져오기
     ;(async () => {
       const { data } = await supabase
         .from('climbing_branch')
