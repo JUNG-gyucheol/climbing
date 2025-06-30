@@ -9,6 +9,32 @@ import { supabase } from '@/client/client'
 import { SettingSchedule } from '@/types/theClimbTypes'
 import _ from 'lodash'
 
+async function uploadToSupabase(file: File) {
+  try {
+    const filePath = `uploads/${Date.now()}_${file.name}`
+
+    const { error } = await supabase.storage
+      .from('photos')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false,
+      })
+
+    if (error) {
+      throw error
+    }
+
+    const { data } = await supabase.storage
+      .from('photos')
+      .createSignedUrl(filePath, 60 * 60)
+
+    return { filePath, url: data?.signedUrl }
+  } catch (error) {
+    console.error('Upload error:', error)
+    return null
+  }
+}
+
 const client = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
 })
@@ -135,8 +161,12 @@ export async function GET() {
         }
       }
 
-      console.log(formatedData)
       for (let j = 0; j < formatedData.length; j++) {
+        const imageResponsee = await fetch(formatedData[j].image)
+        const bufferr = await imageResponsee.arrayBuffer()
+        const file = new File([bufferr], 'image.png', { type: 'image/png' })
+        const res = await uploadToSupabase(file)
+
         const response = await client.chat.completions.create({
           model: 'gpt-4.1-mini',
           messages: [
@@ -177,7 +207,7 @@ export async function GET() {
                 {
                   type: 'image_url',
                   image_url: {
-                    url: formatedData[j].image,
+                    url: res?.url || '',
                   },
                 },
               ],
