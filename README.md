@@ -1,58 +1,31 @@
-# Portfolio Website
+# Climbing
 
-더클라임이라는 클라이밍장 영업시간, 주소, 세팅날짜, 지점을 보여주고 있습니다.
+클라이밍짐 정보 웹앱 (데이터 크롤러 포함)
 
-- 라이브 데모: https://climbing-two.vercel.app/
+## 기술 스택
 
-## 🌟 주요 기능
+![Next.js](https://img.shields.io/badge/Next.js_15-000?logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React_19-61DAFB?logo=react&logoColor=black)
+![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
 
-- PWA (Progressive Web App) 지원
-- 인스타그램 피드 이미지 링크를 gpt로 전달하여 클라이밍 일정을 가져옴
-- 영업시간은 네이버를 크롤링하여 가져옴(Github Actions scheduler 사용)
+## 주요 기능
 
-## 🛠 사용 기술
+- Supabase 기반 클라이밍짐 데이터 관리
+- Puppeteer 기반 웹 크롤러로 짐 정보 수집
+- OpenAI API 연동 (데이터 가공/분석)
+- Firebase 푸시 알림 (FCM)
+- React Three Fiber 3D 효과
+- GSAP 애니메이션
+- PWA 지원 (next-pwa)
+- Swiper 슬라이드 UI
 
-- Next.js
-- Three.js
-- TypeScript
-- Tailwind CSS
-- Vercel
-- Supabase
-
-## 🚀 설치 및 실행
-
-1. 프로젝트 클론
-
-```bash
-git clone https://github.com/yourusername/your-repo.git
-```
-
-2. 의존성 설치
+## 실행 방법
 
 ```bash
-yarn
+npm install
+npm run dev
 ```
 
-3. 개발 서버 실행
-
-```bash
-yarn dev
-```
-
-4. 빌드
-
-```bash
-yarn build
-```
-
-## 📱 PWA 설치 방법
-
-1. 모바일 브라우저에서 웹사이트 접속
-2. 브라우저 메뉴에서 "홈 화면에 추가" 선택
-3. 설치 프롬프트 따라하기
-
-## 🌐 배포
-
-이 웹사이트는 [배포 플랫폼]에 배포되어 있습니다.
-
-- 라이브 데모: https://climbing-two.vercel.app/
+`.env` 파일에 Supabase, Firebase, OpenAI 인증 정보 설정 필요
